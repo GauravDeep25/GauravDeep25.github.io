@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N6HDHMBC8X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N6HDHMBC8X');
+</script>
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Gaurav Deep</a>
+            <div class="nav-links-desktop">
+                <a href="index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-controls">
+                <button id="theme-toggle">🌙</button>
+                <button id="menu-toggle" class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="mobile-nav-panel">
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <div class="contact-card matte-glass">
+                <div class="contact-form-container">
+                    <h3>Send a Message</h3>
+                    <form id="contact-form" action="https://formspree.io/f/xrblrape" method="POST">
+                        <!-- ADDED: Name input field -->
+                        <div class="form-group">
+                            <label for="name">Your Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Your Message:</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Send</button>
+                    </form>
+                    <div id="form-status"></div>
+                </div>
+                <div class="contact-info-divider"></div>
+                <div class="contact-info-container">
+                    <h3>Or Contact Me Directly</h3>
+                    <div class="contact-info-item">
+                        <strong>Email</strong>
+                        <p>gauravdeepgd12007@gmail.com</p>
+                    </div>
+                    <div class="contact-info-item">
+                        <strong>Phone</strong>
+                        <p>+91 9304505204</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/gauravdeep25/" target="_blank">
+                    <img src="images/linkedin.svg" alt="LinkedIn Profile">
+                </a>
+                <a href="https://github.com/GauravDeep25" target="_blank">
+                    <img src="images/github.svg" alt="GitHub Profile">
+                </a>
+                <a href="https://instagram.com/gaurav.d.jpg" target="_blank">
+                    <img src="images/instagram.svg" alt="Instagram Profile">
+                </a>
+            </div>
+            <p>&copy; 2024 Gaurav Deep. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
