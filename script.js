@@ -18,25 +18,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineNav = document.getElementById('timeline-nav');
     const sections = document.querySelectorAll('section');
     const timelineLinks = document.querySelectorAll('.timeline-link');
+    let touchTimeout;
 
-    const timelineObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                timelineNav.classList.add('visible');
-            }
-            // Hide timeline if scrolling back to the top (hero section)
-            if (window.scrollY < 500) {
-                 timelineNav.classList.remove('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    // Observe the first section after the hero
-    if (document.getElementById('education')) {
-        timelineObserver.observe(document.getElementById('education'));
+    // Function to show the timeline
+    function showTimeline() {
+        timelineNav.classList.add('visible');
     }
 
-    // Highlight active link on scroll
+    // Function to hide the timeline
+    function hideTimeline() {
+        timelineNav.classList.remove('visible');
+    }
+
+    // Logic for Touch Devices (Mobile)
+    if ('ontouchstart' in window) {
+        document.addEventListener('touchstart', () => {
+            showTimeline();
+            // Clear any existing timer
+            clearTimeout(touchTimeout);
+            // Set a new timer to hide the timeline after 3 seconds of inactivity
+            touchTimeout = setTimeout(hideTimeline, 3000);
+        });
+    } 
+    // Logic for Non-Touch Devices (PC)
+    else {
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Show timeline if scrolling past the first main section
+                if (entry.isIntersecting && window.scrollY > 500) {
+                    showTimeline();
+                } else if (window.scrollY < 500) {
+                    hideTimeline();
+                }
+            });
+        }, { threshold: 0.1 });
+
+        if (document.getElementById('education')) {
+            scrollObserver.observe(document.getElementById('education'));
+        }
+    }
+
+    // Logic to highlight the active link (works for both mobile and PC)
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
