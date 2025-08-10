@@ -1,19 +1,18 @@
 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
-    <defs>
-        <!-- The large radial gradient creates the "globe" highlight -->
-        <radialGradient id="globeGlow" cx="50%" cy="50%" r="60%" fx="50%" fy="50%">
-            <stop offset="0%" stop-color="#00C1FF" stop-opacity="0.2" />
-            <stop offset="100%" stop-color="#0A0A0A" stop-opacity="0" />
-        </radialGradient>
-        <!-- The grid pattern -->
-        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(0, 193, 255, 0.1)" stroke-width="1"/>
-        </pattern>
-    </defs>
-    <!-- A solid black base -->
+    <!-- Solid black base -->
     <rect width="100%" height="100%" fill="#0A0A0A" />
-    <!-- The grid lines -->
-    <rect width="100%" height="100%" fill="url(#grid)" />
-    <!-- The globe glow effect on top -->
-    <rect width="100%" height="100%" fill="url(#globeGlow)" />
+
+    <!-- Blue Globe Outline -->
+    <g stroke="#00C1FF" stroke-opacity="0.4" stroke-width="2" fill="none">
+        <!-- Main Outline -->
+        <circle cx="400" cy="400" r="300" />
+        <!-- Latitude Lines -->
+        <ellipse cx="400" cy="400" rx="300" ry="100" />
+        <ellipse cx="400" cy="400" rx="300" ry="200" />
+        <line x1="100" y1="400" x2="700" y2="400" />
+        <!-- Longitude Lines -->
+        <ellipse cx="400" cy="400" rx="100" ry="300" />
+        <ellipse cx="400" cy="400" rx="200" ry="300" />
+        <line x1="400" y1="100" x2="400" y2="700" />
+    </g>
 </svg>
