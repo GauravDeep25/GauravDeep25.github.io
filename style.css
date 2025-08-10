@@ -71,7 +71,7 @@ body.light-mode {
 #timeline-nav {
     position: fixed;
     top: 50%;
-    right: 30px;
+    right: 15px; /* Positioned closer to the edge for all screens */
     transform: translateY(-50%);
     z-index: 1000;
     opacity: 0;
@@ -88,16 +88,16 @@ body.light-mode {
     margin: 0;
 }
 #timeline-nav li {
-    margin: 15px 0;
+    margin: 10px 0; /* Reduced vertical spacing */
     text-align: right;
 }
 .timeline-link {
     text-decoration: none;
     color: var(--text-secondary-dark);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Made text smaller for mobile */
     position: relative;
-    padding-right: 25px;
+    padding-right: 20px; /* Reduced padding */
     transition: color 0.3s;
 }
 .timeline-link::after {
@@ -106,7 +106,7 @@ body.light-mode {
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    width: 15px;
+    width: 12px; /* Made line shorter */
     height: 2px;
     background-color: var(--text-secondary-dark);
     transition: width 0.3s, background-color 0.3s;
@@ -117,14 +117,8 @@ body.light-mode {
 }
 .timeline-link.active::after,
 .timeline-link:hover::after {
-    width: 25px;
+    width: 20px; /* Shorter active line */
     background-color: var(--accent-color);
-}
-
-@media (max-width: 1200px) {
-    #timeline-nav {
-        display: none;
-    }
 }
 
 /* --- Sections & Animations --- */
@@ -179,7 +173,7 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     margin-top: 0;
 }
 .about-text-centered.visible {
-    max-height: 500px; /* Increased to fit the whole paragraph */
+    max-height: 500px;
     opacity: 1;
     margin-top: 30px;
 }
@@ -375,4 +369,10 @@ footer {
     margin-top: 60px;
     border-top: 1px solid;
 }
-.dark-mode footer { border-color: rgba(255, 255, 255, 0.1);
+.dark-mode footer { border-color: rgba(255, 255, 255, 0.1); }
+.light-mode footer { border-color: rgba(0, 0, 0, 0.1); }
+.social-links { margin-bottom: 20px; }
+.social-links a { margin: 0 15px; display: inline-block; }
+.social-links img { width: 28px; height: 28px; transition: transform 0.3s; }
+.social-links img:hover { transform: scale(1.2); }
+.dark-mode .social-links img { filter: invert(1) brightness(1.5); }
