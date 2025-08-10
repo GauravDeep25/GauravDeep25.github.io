@@ -1,38 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Side Panel Navigation Logic ---
-    const menuToggle = document.getElementById('menu-toggle');
-    const sidePanel = document.getElementById('side-panel');
-    const overlay = document.getElementById('overlay');
-    // Select all the navigation links inside the side panel
-    const navLinks = document.querySelectorAll('.side-nav-links a');
+    // --- Read More Logic ---
+    const readMoreBtn = document.getElementById('read-more-btn');
+    const aboutDetails = document.getElementById('about-details');
 
-    function openMenu() {
-        menuToggle.classList.add('open');
-        sidePanel.classList.add('open');
-        overlay.classList.add('open');
+    if (readMoreBtn && aboutDetails) {
+        readMoreBtn.addEventListener('click', () => {
+            aboutDetails.classList.toggle('visible');
+            if (aboutDetails.classList.contains('visible')) {
+                readMoreBtn.textContent = 'Read Less';
+            } else {
+                readMoreBtn.textContent = 'Read More';
+            }
+        });
     }
-
-    function closeMenu() {
-        menuToggle.classList.remove('open');
-        sidePanel.classList.remove('open');
-        overlay.classList.remove('open');
-    }
-
-    menuToggle.addEventListener('click', () => {
-        if (sidePanel.classList.contains('open')) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    });
-
-    overlay.addEventListener('click', closeMenu);
-
-    // NEW: Add a click listener to each navigation link
-    navLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-
 
     // --- Form Submission Logic (No Redirect) ---
     const contactForm = document.getElementById('contact-form');
