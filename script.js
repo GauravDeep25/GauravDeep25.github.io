@@ -1,54 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Theme Switcher Logic ---
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-
-    function applyTheme() {
-        const preferredTheme = localStorage.getItem('theme') || 'dark';
-        if (preferredTheme === 'dark') {
-            body.classList.add('dark-mode');
-            body.classList.remove('light-mode');
-            if (themeToggle) themeToggle.textContent = '☀️';
-        } else {
-            body.classList.add('light-mode');
-            body.classList.remove('dark-mode');
-            if (themeToggle) themeToggle.textContent = '🌙';
-        }
-    }
-
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const isDarkMode = body.classList.toggle('dark-mode');
-            body.classList.toggle('light-mode', !isDarkMode);
-
-            if (isDarkMode) {
-                themeToggle.textContent = '☀️';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeToggle.textContent = '🌙';
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    }
-
-    applyTheme();
-
-    // --- Mobile Menu Logic ---
+    // --- Side Panel Navigation Logic ---
     const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const sidePanel = document.getElementById('side-panel');
+    const overlay = document.getElementById('overlay');
+    const navLinks = document.querySelectorAll('.side-nav-links a');
 
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('open');
-            mobileMenu.classList.toggle('open');
-        });
+    function openMenu() {
+        menuToggle.classList.add('open');
+        sidePanel.classList.add('open');
+        overlay.classList.add('open');
     }
+
+    function closeMenu() {
+        menuToggle.classList.remove('open');
+        sidePanel.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+
+    menuToggle.addEventListener('click', () => {
+        if (sidePanel.classList.contains('open')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    overlay.addEventListener('click', closeMenu);
+
+    // Close menu when a link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
 
     // --- Form Submission Logic (No Redirect) ---
     const contactForm = document.getElementById('contact-form');
 
     async function handleFormSubmit(event) {
-        event.preventDefault(); // Prevent the default redirect
+        event.preventDefault();
         const form = event.target;
         const data = new FormData(form);
         const status = document.getElementById('form-status');
@@ -57,9 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(form.action, {
                 method: form.method,
                 body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Accept': 'application/json' }
             });
 
             if (response.ok) {
