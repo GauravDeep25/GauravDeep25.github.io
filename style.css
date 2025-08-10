@@ -24,7 +24,7 @@ body {
 /* --- Backgrounds & Theme Modes with SVG --- */
 body.dark-mode {
     background-color: #0A0A0A;
-    background-image: url('images/cyber-background.svg');
+    background-image: url('images/cyber-globe-outline-background.svg'); /* UPDATED */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -71,7 +71,7 @@ body.light-mode {
 #timeline-nav {
     position: fixed;
     top: 50%;
-    right: 15px; /* Positioned closer to the edge for all screens */
+    right: 15px;
     transform: translateY(-50%);
     z-index: 1000;
     opacity: 0;
@@ -88,16 +88,16 @@ body.light-mode {
     margin: 0;
 }
 #timeline-nav li {
-    margin: 10px 0; /* Reduced vertical spacing */
+    margin: 10px 0;
     text-align: right;
 }
 .timeline-link {
     text-decoration: none;
     color: var(--text-secondary-dark);
     font-weight: bold;
-    font-size: 0.8rem; /* Made text smaller for mobile */
+    font-size: 0.8rem;
     position: relative;
-    padding-right: 20px; /* Reduced padding */
+    padding-right: 20px;
     transition: color 0.3s;
 }
 .timeline-link::after {
@@ -106,7 +106,7 @@ body.light-mode {
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    width: 12px; /* Made line shorter */
+    width: 12px;
     height: 2px;
     background-color: var(--text-secondary-dark);
     transition: width 0.3s, background-color 0.3s;
@@ -117,7 +117,7 @@ body.light-mode {
 }
 .timeline-link.active::after,
 .timeline-link:hover::after {
-    width: 20px; /* Shorter active line */
+    width: 20px;
     background-color: var(--accent-color);
 }
 
