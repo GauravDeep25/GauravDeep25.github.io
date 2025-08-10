@@ -375,4 +375,10 @@ footer {
 .social-links a { margin: 0 15px; display: inline-block; }
 .social-links img { width: 28px; height: 28px; transition: transform 0.3s; }
 .social-links img:hover { transform: scale(1.2); }
-.dark-mode .social-links img { filter: invert(1) brightness(1.5); }
+
+/* --- Font Size Adjustment for Desktop --- */
+@media (min-width: 768px) {
+    html {
+        font-size: 23px; /* The default is 16px. Change this value to make text bigger or smaller. */
+    }
+}
