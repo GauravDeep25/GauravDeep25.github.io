@@ -401,6 +401,6 @@ footer {
 /* --- Font Size Adjustment for Desktop --- */
 @media (min-width: 768px) {
     html {
-        font-size: 23px; /* The default is 16px. Change this value to make text bigger or smaller. */
+        font-size: 18px; /* The default is 16px. Change this value to make text bigger or smaller. */
     }
 }
