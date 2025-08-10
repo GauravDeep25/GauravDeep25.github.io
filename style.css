@@ -24,7 +24,7 @@ body {
 /* --- Backgrounds & Theme Modes with SVG --- */
 body.dark-mode {
     background-color: #0A0A0A;
-    background-image: url('images/cyber-globe-outline-background.svg');
+    background-image: url('images/cyber-background.svg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
