@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menu-toggle');
     const sidePanel = document.getElementById('side-panel');
     const overlay = document.getElementById('overlay');
+    // Select all the navigation links inside the side panel
     const navLinks = document.querySelectorAll('.side-nav-links a');
 
     function openMenu() {
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     overlay.addEventListener('click', closeMenu);
 
-    // Close menu when a link is clicked
+    // NEW: Add a click listener to each navigation link
     navLinks.forEach(link => {
         link.addEventListener('click', closeMenu);
     });
