@@ -1,10 +1,11 @@
 /* --- General Setup & Variables --- */
 :root {
-    --accent-color: #0d8eff;
-    --text-color-dark: #e5e7eb;
-    --text-secondary-dark: #9ca3af;
-    --text-color-light: #1f2937;
-    --text-secondary-light: #4b5563;
+    --accent-color: #00C1FF; /* Brighter, more electric blue */
+    --glow-color: rgba(0, 193, 255, 0.5); /* Glow effect for the accent color */
+    --text-color-dark: #F9FAFB; /* Almost pure white for max contrast */
+    --text-secondary-dark: #a0aec0;
+    --text-color-light: #1a202c;
+    --text-secondary-light: #4a5568;
     --border-radius-main: 20px;
     --strong-blur: 40px;
 }
@@ -18,7 +19,7 @@ body {
 
 /* --- Backgrounds & Theme Modes with SVG --- */
 body.dark-mode {
-    background-color: #111827;
+    background-color: #0A0A0A; /* Deeper black background */
     background-image: url('images/cyber-background.svg');
     background-size: cover;
     background-position: center;
@@ -26,7 +27,7 @@ body.dark-mode {
     color: var(--text-color-dark);
 }
 body.light-mode {
-    background-color: #f3f4f6;
+    background-color: #f7fafc;
     color: var(--text-color-light);
 }
 
@@ -50,23 +51,23 @@ body.light-mode {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 .dark-mode .matte-glass {
-    background: rgba(31, 41, 55, 0.45);
+    background: rgba(23, 31, 46, 0.5); /* Slightly different dark blue base */
     border-color: rgba(255, 255, 255, 0.1);
 }
 .light-mode .matte-glass {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
     border-color: rgba(0, 0, 0, 0.1);
 }
 .matte-glass:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 25px var(--glow-color); /* Glow effect on hover */
 }
 
 /* --- Menu Toggle Button --- */
 .menu-icon {
     position: fixed;
     top: 25px;
-    left: 25px; /* Default desktop position */
+    left: 25px;
     z-index: 1010;
     display: flex;
     flex-direction: column;
@@ -86,8 +87,6 @@ body.light-mode {
 }
 .dark-mode .menu-icon span { background: var(--text-color-dark); }
 .light-mode .menu-icon span { background: var(--text-color-light); }
-
-/* Hamburger animation */
 .menu-icon.open span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
 .menu-icon.open span:nth-child(2) { opacity: 0; }
 .menu-icon.open span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
@@ -100,7 +99,7 @@ body.light-mode {
     width: 280px;
     height: 100%;
     z-index: 1005;
-    transform: translateX(-100%); /* Hidden by default */
+    transform: translateX(-100%);
     transition: transform 0.4s ease-in-out;
     padding: 40px;
     box-sizing: border-box;
@@ -108,7 +107,7 @@ body.light-mode {
     flex-direction: column;
 }
 .side-nav-panel.open {
-    transform: translateX(0); /* Slides into view */
+    transform: translateX(0);
 }
 .nav-logo {
     font-weight: bold;
@@ -151,11 +150,10 @@ body.light-mode {
     visibility: visible;
 }
 
-/* --- Responsive Design for Menu --- */
 @media (max-width: 768px) {
     .menu-icon {
-        left: auto; /* Remove left position */
-        right: 25px; /* Position on the right for mobile */
+        left: auto;
+        right: 25px;
     }
 }
 
@@ -235,12 +233,13 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     padding: 10px 20px;
     font-weight: 500;
     border-radius: var(--border-radius-main);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     background: rgba(255, 255, 255, 0.1);
 }
 .light-mode .skill-item { background: rgba(0, 0, 0, 0.05); }
 .skill-item:hover {
     transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 15px var(--glow-color);
 }
 
 /* --- Project Cards --- */
@@ -327,7 +326,7 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
-.btn-submit:hover { background-color: #0b78d6; transform: scale(1.02); }
+.btn-submit:hover { background-color: #00a4d6; transform: scale(1.02); }
 .contact-info-item { margin-bottom: 20px; }
 .contact-info-item strong { display: block; margin-bottom: 5px; }
 
