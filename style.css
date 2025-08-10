@@ -1,8 +1,8 @@
 /* --- General Setup & Variables --- */
 :root {
-    --accent-color: #00C1FF; /* Brighter, more electric blue */
-    --glow-color: rgba(0, 193, 255, 0.5); /* Glow effect for the accent color */
-    --text-color-dark: #F9FAFB; /* Almost pure white for max contrast */
+    --accent-color: #00C1FF;
+    --glow-color: rgba(0, 193, 255, 0.5);
+    --text-color-dark: #F9FAFB;
     --text-secondary-dark: #a0aec0;
     --text-color-light: #1a202c;
     --text-secondary-light: #4a5568;
@@ -19,7 +19,7 @@ body {
 
 /* --- Backgrounds & Theme Modes with SVG --- */
 body.dark-mode {
-    background-color: #0A0A0A; /* Deeper black background */
+    background-color: #0A0A0A;
     background-image: url('images/cyber-background.svg');
     background-size: cover;
     background-position: center;
@@ -51,7 +51,7 @@ body.light-mode {
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 .dark-mode .matte-glass {
-    background: rgba(23, 31, 46, 0.5); /* Slightly different dark blue base */
+    background: rgba(23, 31, 46, 0.5);
     border-color: rgba(255, 255, 255, 0.1);
 }
 .light-mode .matte-glass {
@@ -60,101 +60,7 @@ body.light-mode {
 }
 .matte-glass:hover {
     transform: translateY(-8px);
-    box-shadow: 0 0 25px var(--glow-color); /* Glow effect on hover */
-}
-
-/* --- Menu Toggle Button --- */
-.menu-icon {
-    position: fixed;
-    top: 25px;
-    left: 25px;
-    z-index: 1010;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 30px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-.menu-icon span {
-    width: 100%;
-    height: 3px;
-    border-radius: 3px;
-    transition: all 0.3s ease-in-out;
-}
-.dark-mode .menu-icon span { background: var(--text-color-dark); }
-.light-mode .menu-icon span { background: var(--text-color-light); }
-.menu-icon.open span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
-.menu-icon.open span:nth-child(2) { opacity: 0; }
-.menu-icon.open span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
-
-/* --- Side Navigation Panel --- */
-.side-nav-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100%;
-    z-index: 1005;
-    transform: translateX(-100%);
-    transition: transform 0.4s ease-in-out;
-    padding: 40px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
-.side-nav-panel.open {
-    transform: translateX(0);
-}
-.nav-logo {
-    font-weight: bold;
-    font-size: 1.8rem;
-    margin-bottom: 50px;
-}
-.side-nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-.side-nav-links a {
-    color: inherit;
-    text-decoration: none;
-    font-size: 1.2rem;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
-}
-.side-nav-links a:hover {
-    background-color: var(--accent-color);
-    color: white;
-}
-
-/* --- Page Overlay --- */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s, visibility 0.4s;
-}
-#overlay.open {
-    opacity: 1;
-    visibility: visible;
-}
-
-@media (max-width: 768px) {
-    .menu-icon {
-        left: auto;
-        right: 25px;
-    }
+    box-shadow: 0 0 25px var(--glow-color);
 }
 
 /* --- Sections & Animations --- */
@@ -185,6 +91,35 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     100% { transform: translateY(0px); }
 }
 .about-content-centered { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+/* NEW: Read More button and text styles */
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 20px;
+}
+.btn-secondary:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+.about-text-centered {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out, margin-top 0.5s ease-out;
+    margin-top: 0;
+}
+.about-text-centered.visible {
+    max-height: 200px; /* Adjust if your text is longer */
+    opacity: 1;
+    margin-top: 30px;
+}
 .about-text-centered p { font-size: 1.1rem; line-height: 1.7; max-width: 650px; margin: 0 auto; }
 .dark-mode .about-text-centered p { color: var(--text-secondary-dark); }
 .light-mode .about-text-centered p { color: var(--text-secondary-light); }
@@ -262,6 +197,24 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     margin-right: 5px;
     margin-top: 15px;
 }
+
+/* --- Certificates Section --- */
+.certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+.certificate-card {
+    padding: 25px;
+    text-align: center;
+}
+.certificate-card h3 { margin: 0 0 10px 0; }
+.certificate-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.dark-mode .certificate-card p { color: var(--text-secondary-dark); }
+.light-mode .certificate-card p { color: var(--text-secondary-light); }
 
 /* --- Contact Page --- */
 .contact-card {
