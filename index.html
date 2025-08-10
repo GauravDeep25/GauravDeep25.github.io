@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-       <!-- Google tag (gtag.js) -->
+         <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N6HDHMBC8X"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,8 +12,7 @@
   gtag('config', 'G-N6HDHMBC8X');
 </script>
 
-
-     
+       
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaurav Deep | Portfolio</title>
@@ -21,29 +20,25 @@
 </head>
 <body class="dark-mode">
 
-    <header>
-        <nav>
-            <a href="#about" class="logo">Gaurav Deep</a>
-            <div class="nav-links-desktop">
-                <a href="#about">Home</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="nav-controls">
-                <button id="theme-toggle">🌙</button>
-                <button id="menu-toggle" class="menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="mobile-nav-panel">
+    <!-- NEW: Menu Toggle Button (Hamburger Icon) -->
+    <button id="menu-toggle" class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- NEW: Side Navigation Panel -->
+    <aside id="side-panel" class="side-nav-panel matte-glass">
+        <div class="nav-logo">Gaurav Deep</div>
+        <nav class="side-nav-links">
             <a href="#about">Home</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
-        </div>
-    </header>
+        </nav>
+    </aside>
+
+    <!-- NEW: Page Overlay -->
+    <div id="overlay"></div>
 
     <main class="container">
         <section id="about">
@@ -54,7 +49,9 @@
                 </div>
                 <div class="about-text-centered animated-element">
                     <p>
-                        Hello! I'm a passionate and creative web developer based in [Your City]. I specialize in building modern, responsive, and user-friendly web applications.
+                        I am a second-year B.Tech Computer Science Engineering student specializing in IoT, Cybersecurity, and Blockchain Technology. My focus areas include web development, programming in C and Java, and foundational cybersecurity practices. I have the skills to build user-friendly, responsive, and secure web applications and websites that perform efficiently across devices. I am developing expertise in problem-solving, secure coding, and system design while working on academic and personal projects. My work ensures that solutions meet both technical and industry standards, combining functionality, scalability, and strong security measures to deliver high-quality results in every project I undertake.
+
+
                     </p>
                 </div>
             </div>
@@ -67,28 +64,28 @@
                     <div class="education-item">
                         <div class="education-summary">
                             <h3>Sikkim Manipal Institute of Technology (SMIT)</h3>
-                            <p>B.Tech, CSE (IoT, Cybersecurity & Blockchain) | 2021 - 2025</p>
+                            <p>B.Tech, Computer Science & Engineering | 2024 - 2028</p>
                         </div>
                         <div class="education-details">
-                            <p>Pursuing a specialized degree focused on modern security protocols, network defense, and decentralized systems, alongside core engineering fundamentals.</p>
+                            <p>Pursuing a specialized B.Tech in CSE with a focus on IoT, Cybersecurity, and Blockchain Technology. This program provides in-depth knowledge of modern security protocols, network defense, and decentralized systems, alongside core engineering fundamentals. Focused on core subjects like Data Structures, Algorithms, and Web Development.</p>
                         </div>
                     </div>
                     <div class="education-item">
                         <div class="education-summary">
                             <h3>Vidyashram Public School</h3>
-                            <p>Higher Secondary Certificate (CBSE) | 70% Aggregate</p>
+                            <p>Higher Secondary Certificate (CBSE) | 2024</p>
                         </div>
                         <div class="education-details">
-                            <p>Built a strong foundation in core science and mathematics, developing the analytical and problem-solving skills essential for engineering.</p>
+                            <p>Achieved a first-class aggregate of 70%. This curriculum was pivotal in building a strong foundation in core science and mathematics principles, developing the analytical and problem-solving skills essential for a career in engineering.</p>
                         </div>
                     </div>
                     <div class="education-item">
                         <div class="education-summary">
                             <h3>GEMS English School</h3>
-                            <p>Secondary School Certificate (ICSE) | 91% Aggregate</p>
+                            <p>Secondary School Certificate (ICSE) | 2022</p>
                         </div>
                         <div class="education-details">
-                            <p>Secured a distinction, reflecting a strong commitment to academic excellence and a comprehensive grasp of foundational subjects.</p>
+                            <p>Secured a distinction with an aggregate of 91%. This result reflects a strong commitment to academic excellence and a comprehensive grasp of foundational subjects, setting a high standard for future academic pursuits.</p>
                         </div>
                     </div>
                 </div>
@@ -114,13 +111,12 @@
             </div>
         </section>
 
-        <!-- Projects Section Moved Here -->
         <section id="projects">
             <h2>Featured Projects</h2>
             <div class="project-grid">
                 <div class="project-card matte-glass">
                     <h3>My Personal Portfolio</h3>
-                    <p>The website you are currently viewing. A responsive, multi-page site with a dark mode toggle, built from scratch.</p>
+                    <p>The website you are currently viewing. A responsive, single-page site with a dark mode toggle, built from scratch.</p>
                     <div class="tags">
                         <span>HTML5</span>
                         <span>CSS3</span>
@@ -144,7 +140,6 @@
             </div>
         </section>
 
-        <!-- Contact Section Moved Here -->
         <section id="contact">
             <h2>Get In Touch</h2>
             <div class="contact-card matte-glass">
