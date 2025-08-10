@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N6HDHMBC8X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-           <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-N6HDHMBC8X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-N6HDHMBC8X');
-</script>
-
+      gtag('config', 'G-N6HDHMBC8X');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaurav Deep | Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
+
+    <!-- NEW: Timeline Navigation -->
+    <nav id="timeline-nav">
+        <ul>
+            <li><a href="#about" class="timeline-link active">About</a></li>
+            <li><a href="#education" class="timeline-link">Education</a></li>
+            <li><a href="#skills" class="timeline-link">Skills</a></li>
+            <li><a href="#projects" class="timeline-link">Projects</a></li>
+            <li><a href="#certificates" class="timeline-link">Certificates</a></li>
+            <li><a href="#contact" class="timeline-link">Contact</a></li>
+        </ul>
+    </nav>
 
     <main class="container">
         <section id="about">
@@ -26,14 +36,10 @@
                     <h1 class="hero-name">Gaurav Deep</h1>
                     <h2 class="hero-major">B.Tech CSE (IoT, Cybersecurity & Blockchain)</h2>
                 </div>
-
                 <button id="read-more-btn" class="btn-secondary">Read More</button>
-
                 <div id="about-details" class="about-text-centered">
                     <p>
                         I am a second-year B.Tech Computer Science Engineering student specializing in IoT, Cybersecurity, and Blockchain Technology. My focus areas include web development, programming in C and Java, and foundational cybersecurity practices. I have the skills to build user-friendly, responsive, and secure web applications and websites that perform efficiently across devices. I am developing expertise in problem-solving, secure coding, and system design while working on academic and personal projects. My work ensures that solutions meet both technical and industry standards, combining functionality, scalability, and strong security measures to deliver high-quality results in every project I undertake.
-
-
                     </p>
                 </div>
             </div>
@@ -126,14 +132,17 @@
             <h2>Certificates & Achievements</h2>
             <div class="certificates-grid">
                 <div class="certificate-card matte-glass">
+                    <img src="https://placehold.co/600x400/00C1FF/white?text=Certificate+1" alt="Certificate 1" class="certificate-image">
                     <h3>Certificate Name 1</h3>
                     <p>Issued by: Authority (e.g., Coursera, Udemy)</p>
                 </div>
                 <div class="certificate-card matte-glass">
+                    <img src="https://placehold.co/600x400/00C1FF/white?text=Certificate+2" alt="Certificate 2" class="certificate-image">
                     <h3>Certificate Name 2</h3>
                     <p>Issued by: Authority</p>
                 </div>
                 <div class="certificate-card matte-glass">
+                    <img src="https://placehold.co/600x400/00C1FF/white?text=Achievement" alt="Achievement" class="certificate-image">
                     <h3>Hackathon Winner</h3>
                     <p>Event Name | 1st Place</p>
                 </div>
