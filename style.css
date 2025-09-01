@@ -275,6 +275,18 @@ h2 { font-size: 2.2rem; margin-bottom: 50px; }
     margin-right: 5px;
     margin-top: 15px;
 }
+.project-card .tags .tag-link {
+  background-color: #f0f0f0;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.project-card .tags .tag-link:hover {
+  background-color: #e0e0e0;
+}
 
 /* --- Certificates Section --- */
 .certificates-grid {
