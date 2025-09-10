@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+      env:
+        VITE_FORMSPREE_FORM_ID: ${{ secrets.VITE_FORMSPREE_FORM_ID }}
+        VITE_CONTACT_EMAIL: ${{ secrets.VITE_CONTACT_EMAIL }}
+        VITE_CONTACT_PHONE: ${{ secrets.VITE_CONTACT_PHONE }}
+        VITE_GITHUB_URL: ${{ secrets.VITE_GITHUB_URL }}
+        VITE_LINKEDIN_URL: ${{ secrets.VITE_LINKEDIN_URL }}
+        VITE_INSTAGRAM_URL: ${{ secrets.VITE_INSTAGRAM_URL }}
+        VITE_DETECTIFY_LIVE_URL: ${{ secrets.VITE_DETECTIFY_LIVE_URL }}
+        VITE_DETECTIFY_GITHUB_URL: ${{ secrets.VITE_DETECTIFY_GITHUB_URL }}
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
