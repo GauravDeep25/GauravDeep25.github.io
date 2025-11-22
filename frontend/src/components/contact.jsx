@@ -35,13 +35,13 @@ const Contact = () => {
       setStatus('error');
       return;
     }
-    
+
     setIsSubmitting(true);
     setStatus('');
-    
+
     try {
       const formspreeId = import.meta.env.VITE_FORMSPREE_FORM_ID;
-      
+
       if (!formspreeId) {
         console.error('Formspree Form ID not found in environment variables');
         setStatus('error');
@@ -69,7 +69,7 @@ const Contact = () => {
           email: '',
           message: '',
         });
-        
+
         // Remove status message after 5 seconds
         setTimeout(() => setStatus(''), 5000);
       } else {
@@ -94,61 +94,67 @@ const Contact = () => {
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className={`form-group ${focusedField === 'name' ? 'focused' : ''} ${formData.name ? 'filled' : ''}`}>
               <label className="form-label">Name</label>
-              <input
-                type="text"
-                name="name"
-                className="form-input"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={handleChange}
-                onFocus={() => handleFocus('name')}
-                onBlur={handleBlur}
-                required
-              />
-              <div className="input-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
+              <div className="input-wrapper">
+                <input
+                  type="text"
+                  name="name"
+                  className="form-input"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  onFocus={() => handleFocus('name')}
+                  onBlur={handleBlur}
+                  required
+                />
+                <div className="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
               </div>
             </div>
             <div className={`form-group ${focusedField === 'email' ? 'focused' : ''} ${formData.email ? 'filled' : ''}`}>
               <label className="form-label">Email</label>
-              <input
-                type="email"
-                name="email"
-                className="form-input"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                onFocus={() => handleFocus('email')}
-                onBlur={handleBlur}
-                required
-              />
-              <div className="input-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
+              <div className="input-wrapper">
+                <input
+                  type="email"
+                  name="email"
+                  className="form-input"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  onFocus={() => handleFocus('email')}
+                  onBlur={handleBlur}
+                  required
+                />
+                <div className="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </div>
               </div>
             </div>
             <div className={`form-group ${focusedField === 'message' ? 'focused' : ''} ${formData.message ? 'filled' : ''}`}>
               <label className="form-label">Message</label>
-              <textarea
-                name="message"
-                className="form-textarea"
-                placeholder="Enter your message"
-                rows="6"
-                value={formData.message}
-                onChange={handleChange}
-                onFocus={() => handleFocus('message')}
-                onBlur={handleBlur}
-                required
-              ></textarea>
-              <div className="input-icon textarea-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
+              <div className="input-wrapper">
+                <textarea
+                  name="message"
+                  className="form-textarea"
+                  placeholder="Enter your message"
+                  rows="6"
+                  value={formData.message}
+                  onChange={handleChange}
+                  onFocus={() => handleFocus('message')}
+                  onBlur={handleBlur}
+                  required
+                ></textarea>
+                <div className="input-icon textarea-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
               </div>
             </div>
             <button type="submit" className={`submit-btn ${isSubmitting ? 'submitting' : ''}`} disabled={isSubmitting}>
@@ -186,11 +192,11 @@ const Contact = () => {
               </div>
             )}
           </form>
-          
+
           <div className="contact-info">
             <h3 className="contact-info-title">Let's Connect</h3>
             <p className="contact-info-subtitle">Feel free to reach out through email</p>
-            
+
             <div className="contact-methods">
               <a href="mailto:gauravdeepgd2007@gmail.com" className="contact-method-card">
                 <div className="method-icon">

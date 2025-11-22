@@ -1,40 +1,14 @@
 import React, { useState } from 'react';
 import './about.css';
-
-// --- Sample Data for Education Timeline ---
-const educationData = [
-  {
-    degree: "Bachelor of Technology in Computer Science and Engineering",
-    university: "Sikkim Manipal Institute of Technology - Sikkim Manipal University",
-    years: "2024 - 2028",
-    description: "Pursuing a specialized B.Tech in CSE with a focus on IoT, Cybersecurity, and Blockchain Technology. This program provides in-depth knowledge of modern security protocols, network defense, and decentralized systems, alongside core engineering fundamentals. Focused on core subjects like Data Structures, Algorithms, and Web Development.",
-    status: "Current",
-    grade: "Ongoing",
-    technologies: ["IoT", "Cybersecurity", "Blockchain", "Data Structures", "Algorithms", "Web Development"]
-  },
-  {
-    degree: "Higher Secondary Certificate",
-    university: "Central Board of Secondary Education (CBSE)",
-    years: "2022 - 2024",
-    description: "Achieved a first-class aggregate of 69%. This curriculum was pivotal in building a strong foundation in core science and mathematics principles, developing the analytical and problem-solving skills essential for a career in engineering.",
-    status: "Completed",
-    grade: "69%",
-    technologies: ["Mathematics", "Physics", "Chemistry", "Physical Education"]
-  },
-  {
-    degree: "Secondary School Certificate",
-    university: "Council for the Indian School Certificate Examinations (CISCE)",
-    years: "2012 - 2022",
-    description: "Secured a distinction with an aggregate of 91%. This result reflects a strong commitment to academic excellence and a comprehensive grasp of foundational subjects, setting a high standard for future academic pursuits.",
-    status: "Completed",
-    grade: "91%",
-    technologies: ["Core Subjects", "Science", "Mathematics", "English", "Computer Applications"]
-  },
-];
-
+import { useContent } from '../context/ContentContext.jsx';
 
 const About = () => {
   const [expandedItems, setExpandedItems] = useState([]);
+  const { content } = useContent();
+
+  const about = content?.about || {};
+  const skills = content?.skills || [];
+  const educationData = content?.education || [];
 
   const toggleExpand = (index) => {
     setExpandedItems(prev => 
@@ -51,23 +25,18 @@ const About = () => {
           <div className="about-text">
             <h2 className="about-title">About Me</h2>
             <p>
-              I'm a passionate and results-driven developer with a knack for creating dynamic and user-friendly web applications. With a strong foundation in modern frontend technologies, I specialize in turning complex problems into elegant, interactive solutions.
+              {about.paragraph_1 || "I'm a passionate and results-driven developer with a knack for creating dynamic and user-friendly web applications. With a strong foundation in modern frontend technologies, I specialize in turning complex problems into elegant, interactive solutions."}
             </p>
             <p>
-              My journey in tech began with a deep curiosity for how things work, and it has since evolved into a career where I get to build, innovate, and collaborate with amazing people. I'm always eager to learn new skills and take on challenging projects.
+              {about.paragraph_2 || "My journey in tech began with a deep curiosity for how things work, and it has since evolved into a career where I get to build, innovate, and collaborate with amazing people. I'm always eager to learn new skills and take on challenging projects."}
             </p>
           </div>
           <div className="about-skills">
             <h3 className="skills-title">Core Skills</h3>
             <div className="skills-grid">
-              <span className="skill-tag">React</span>
-              <span className="skill-tag">JavaScript (ES6+)</span>
-              <span className="skill-tag">CSS3 & SASS</span>
-              <span className="skill-tag">HTML5</span>
-              <span className="skill-tag">Node.js</span>
-              <span className="skill-tag">Vite</span>
-              <span className="skill-tag">Git & GitHub</span>
-              <span className="skill-tag">Responsive Design</span>
+              {skills.map((skill, index) => (
+                <span key={skill.id || index} className="skill-tag">{skill.name}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -89,18 +58,20 @@ const About = () => {
                         <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                       </svg>
                     </div>
-                    <span className="timeline-year">{edu.years}</span>
+                    <span className="timeline-year">{edu.years || `${edu.start_date} - ${edu.end_date || 'Present'}`}</span>
                   </div>
                   <div className={`timeline-content ${isExpanded ? 'expanded' : ''}`}>
                     <div className="timeline-header">
                       <div className="timeline-header-top">
                         <div className="timeline-title-group">
                           <h4 className="timeline-degree">{edu.degree}</h4>
-                          <p className="timeline-university">{edu.university}</p>
+                          <p className="timeline-university">{edu.institution || edu.university}</p>
                         </div>
-                        {edu.status && (
+                        {(edu.status || edu.end_date) && (
                           <div className="timeline-status">
-                            <span className={`status-badge ${edu.status.toLowerCase()}`}>{edu.status}</span>
+                            <span className={`status-badge ${(edu.status || (edu.end_date === 'Present' ? 'current' : 'completed')).toLowerCase()}`}>
+                              {edu.status || (edu.end_date === 'Present' ? 'Current' : 'Completed')}
+                            </span>
                           </div>
                         )}
                       </div>
@@ -114,11 +85,16 @@ const About = () => {
                     
                     <div className={`timeline-expandable ${isExpanded ? 'expanded' : ''}`}>
                       <p className="timeline-description">{edu.description}</p>
-                      {edu.technologies && (
+                      {edu.technologies && edu.technologies.length > 0 && (
                         <div className="timeline-technologies">
                           {edu.technologies.map((tech, techIndex) => (
                             <span key={techIndex} className="tech-tag">{tech}</span>
                           ))}
+                        </div>
+                      )}
+                      {edu.field_of_study && !edu.technologies && (
+                        <div className="timeline-field">
+                          <span className="field-tag">{edu.field_of_study}</span>
                         </div>
                       )}
                     </div>

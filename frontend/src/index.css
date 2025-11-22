@@ -76,7 +76,7 @@ body {
   --transition-slow: 0.5s ease;
 }
 
-/* Dark Theme */
+/* Dark Theme (Default) */
 [data-theme="dark"] {
   --bg-primary: #1a1a1a;
   --bg-secondary: #2d2d2d;
@@ -85,31 +85,34 @@ body {
   --text-secondary: #b0b0b0;
   --text-muted: #808080;
   --border-color: #404040;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Apply theme to body */
+/* Light Theme */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --border-color: #dee2e6;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Apply theme to body and html */
 body,
 html {
-  background-color: #1a1a1a;
-  color: #ffffff;
-}
-
-[data-theme="dark"],
-[data-theme="dark"] body {
-  background-color: #1a1a1a;
-  color: #ffffff;
-}
-
-[data-theme="light"],
-[data-theme="light"] body {
-  background-color: #ffffff;
-  color: #2c3e50;
-}
-
-/* Default to dark theme */
-body {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* Scrollbar Styling */
