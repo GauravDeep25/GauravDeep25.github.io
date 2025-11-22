@@ -69,8 +69,8 @@ const About = () => {
                         </div>
                         {(edu.status || edu.end_date) && (
                           <div className="timeline-status">
-                            <span className={`status-badge ${(edu.status || (edu.end_date === 'Present' ? 'current' : 'completed')).toLowerCase()}`}>
-                              {edu.status || (edu.end_date === 'Present' ? 'Current' : 'Completed')}
+                            <span className={`status-badge ${(edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'current' : 'completed')).toLowerCase()}`}>
+                              {edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'Current' : 'Completed')}
                             </span>
                           </div>
                         )}
