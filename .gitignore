@@ -12,6 +12,7 @@ build/
 .env
 .env.local
 .env.production
+.env.github-secrets
 .env.development
 .env.*.local
 frontend/.env

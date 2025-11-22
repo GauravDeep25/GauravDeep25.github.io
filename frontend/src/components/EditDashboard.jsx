@@ -704,12 +704,11 @@ const EditDashboard = () => {
               <button
                 onClick={() => setEditingEducation({
                   degree: '',
-                  university: '',
-                  years: '',
-                  description: '',
-                  status: '',
-                  grade: '',
-                  technologies: []
+                  institution: '',
+                  field_of_study: '',
+                  start_date: '',
+                  end_date: '',
+                  description: ''
                 })}
                 className="add-button"
               >
@@ -724,63 +723,54 @@ const EditDashboard = () => {
                       <label>Degree</label>
                       <input
                         type="text"
-                        value={editingEducation.degree}
+                        value={editingEducation.degree || ''}
                         onChange={(e) => setEditingEducation({ ...editingEducation, degree: e.target.value })}
+                        placeholder="Bachelor of Technology"
                       />
                     </div>
                     <div className="form-group">
-                      <label>University/Institution</label>
+                      <label>Institution</label>
                       <input
                         type="text"
-                        value={editingEducation.university}
-                        onChange={(e) => setEditingEducation({ ...editingEducation, university: e.target.value })}
+                        value={editingEducation.institution || ''}
+                        onChange={(e) => setEditingEducation({ ...editingEducation, institution: e.target.value })}
+                        placeholder="Sikkim Manipal Institute of Technology"
                       />
                     </div>
                     <div className="form-group">
-                      <label>Years</label>
+                      <label>Field of Study</label>
                       <input
                         type="text"
-                        value={editingEducation.years}
-                        onChange={(e) => setEditingEducation({ ...editingEducation, years: e.target.value })}
-                        placeholder="2024 - 2028"
+                        value={editingEducation.field_of_study || ''}
+                        onChange={(e) => setEditingEducation({ ...editingEducation, field_of_study: e.target.value })}
+                        placeholder="Computer Science and Engineering"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Start Date</label>
+                      <input
+                        type="text"
+                        value={editingEducation.start_date || ''}
+                        onChange={(e) => setEditingEducation({ ...editingEducation, start_date: e.target.value })}
+                        placeholder="2024"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>End Date</label>
+                      <input
+                        type="text"
+                        value={editingEducation.end_date || ''}
+                        onChange={(e) => setEditingEducation({ ...editingEducation, end_date: e.target.value })}
+                        placeholder="2028 or Present"
                       />
                     </div>
                     <div className="form-group">
                       <label>Description</label>
                       <textarea
-                        value={editingEducation.description}
+                        value={editingEducation.description || ''}
                         onChange={(e) => setEditingEducation({ ...editingEducation, description: e.target.value })}
                         rows="4"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Status</label>
-                      <input
-                        type="text"
-                        value={editingEducation.status}
-                        onChange={(e) => setEditingEducation({ ...editingEducation, status: e.target.value })}
-                        placeholder="Current / Completed"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Grade</label>
-                      <input
-                        type="text"
-                        value={editingEducation.grade}
-                        onChange={(e) => setEditingEducation({ ...editingEducation, grade: e.target.value })}
-                        placeholder="Ongoing / 91%"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Technologies (comma-separated)</label>
-                      <input
-                        type="text"
-                        value={Array.isArray(editingEducation.technologies) ? editingEducation.technologies.join(', ') : ''}
-                        onChange={(e) => setEditingEducation({
-                          ...editingEducation,
-                          technologies: e.target.value.split(',').map(t => t.trim()).filter(t => t)
-                        })}
-                        placeholder="IoT, Cybersecurity, Blockchain"
+                        placeholder="Pursuing a specialized B.Tech in CSE with a focus on IoT, Cybersecurity, and Blockchain Technology."
                       />
                     </div>
                     <div className="modal-actions">
@@ -800,7 +790,7 @@ const EditDashboard = () => {
                   <div key={edu.id} className="list-item">
                     <div className="item-content">
                       <h4>{edu.degree}</h4>
-                      <p>{edu.university} • {edu.years}</p>
+                      <p>{edu.institution || edu.university} • {edu.start_date && edu.end_date ? `${edu.start_date} - ${edu.end_date}` : edu.years}</p>
                     </div>
                     <div className="item-actions">
                       <button onClick={() => setEditingEducation(edu)} className="edit-btn">
