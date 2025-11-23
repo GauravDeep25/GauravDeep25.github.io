@@ -3,7 +3,7 @@ import './certifications.css';
 import { useContent } from '../context/ContentContext.jsx';
 
 const Certifications = () => {
-  const { content } = useContent();
+  const { content, loading } = useContent();
   const certificationsData = content?.certifications || [];
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -16,6 +16,22 @@ const Certifications = () => {
   const closeLightbox = () => {
     setSelectedImage(null);
   };
+
+  if (loading) {
+    return (
+      <section id="certifications" className="certifications-section">
+        <div className="certifications-container">
+          <div className="skeleton skeleton-title" style={{ width: '350px', height: '2rem', marginBottom: '1rem' }}></div>
+          <div className="skeleton skeleton-text" style={{ width: '500px', height: '1rem', marginBottom: '2rem' }}></div>
+          <div className="certifications-grid">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="certification-card skeleton" style={{ height: '450px' }}></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="certifications" className="certifications-section">

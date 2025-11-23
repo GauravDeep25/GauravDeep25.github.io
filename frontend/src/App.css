@@ -403,3 +403,90 @@ a:active {
     display: none;
   }
 }
+
+/* Skeleton Loading Styles */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--bg-tertiary) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0%, 100% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-text {
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.skeleton-title {
+  height: 2em;
+  width: 70%;
+  margin-bottom: 1em;
+}
+
+.skeleton-subtitle {
+  height: 1.5em;
+  width: 50%;
+  margin-bottom: 0.5em;
+}
+
+.skeleton-paragraph {
+  height: 1em;
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.skeleton-paragraph:last-child {
+  width: 80%;
+}
+
+.skeleton-card {
+  height: 300px;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}

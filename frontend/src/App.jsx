@@ -67,17 +67,28 @@ const Portfolio = () => {
 
 // --- Main Content Component ---
 const MainContent = () => {
-  const { content } = useContent();
+  const { content, loading } = useContent();
   const hero = content?.hero || {};
+
+  if (loading) {
+    return (
+      <main className="hero">
+        <div className="skeleton skeleton-subtitle" style={{ width: '100px', height: '1.2rem', marginBottom: '1rem' }}></div>
+        <div className="skeleton skeleton-title" style={{ width: '80%', height: '3rem', marginBottom: '1.5rem' }}></div>
+        <div className="skeleton skeleton-paragraph" style={{ width: '90%', height: '1.2rem', marginBottom: '0.5rem' }}></div>
+        <div className="skeleton skeleton-paragraph" style={{ width: '85%', height: '1.2rem' }}></div>
+      </main>
+    );
+  }
 
   return (
     <main className="hero">
       <span className="hero-subtitle">Portfolio</span>
       <h1 className="hero-headline">
-        {hero.headline || 'Creating digital experiences with elegance and code.'}
+        {hero.headline}
       </h1>
       <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
-        {hero.subheadline || 'I am a passionate developer focused on building clean, efficient, and accessible web applications.'}
+        {hero.subheadline}
       </p>
     </main>
   );
@@ -85,17 +96,8 @@ const MainContent = () => {
 
 // --- Footer Component ---
 const Footer = () => {
-  const { content } = useContent();
+  const { content, loading } = useContent();
   const socialLinks = content?.socialLinks || [];
-
-  // Fallback URLs
-  const defaultLinks = [
-    { platform: 'github', url: 'https://github.com/GauravDeep25' },
-    { platform: 'linkedin', url: 'https://linkedin.com/in/gauravdeep25' },
-    { platform: 'instagram', url: 'https://instagram.com/gaurav.d.jpg' }
-  ];
-
-  const linksToDisplay = socialLinks.length > 0 ? socialLinks : defaultLinks;
 
   const getIcon = (platform) => {
     const p = platform.toLowerCase();
@@ -105,10 +107,23 @@ const Footer = () => {
     return <FaLink />;
   };
 
+  if (loading) {
+    return (
+      <footer className="footer">
+        <div className="social-links">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="skeleton skeleton-circle" style={{ width: '40px', height: '40px' }}></div>
+          ))}
+        </div>
+        <div className="skeleton skeleton-text" style={{ width: '250px', height: '1rem', margin: '1rem auto 0' }}></div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="footer">
       <div className="social-links">
-        {linksToDisplay.map((link, index) => (
+        {socialLinks.map((link, index) => (
           <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" className="footer-link-item">
             <span className="footer-icon">{getIcon(link.platform)}</span>
             <span className="footer-text">{link.platform}</span>

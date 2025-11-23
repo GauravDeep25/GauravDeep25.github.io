@@ -3,7 +3,7 @@ import './projects.css';
 import { useContent } from '../context/ContentContext.jsx';
 
 const Projects = () => {
-  const { content } = useContent();
+  const { content, loading } = useContent();
   const projectData = content?.projects || [];
 
   // Helper to generate a deterministic color gradient based on string
@@ -16,6 +16,21 @@ const Projects = () => {
     const c2 = ((hash * 2) & 0x00FFFFFF).toString(16).toUpperCase();
     return `linear-gradient(135deg, #${"00000".substring(0, 6 - c1.length) + c1}40, #${"00000".substring(0, 6 - c2.length) + c2}40)`;
   };
+
+  if (loading) {
+    return (
+      <section id="projects" className="projects-section">
+        <div className="projects-container">
+          <div className="skeleton skeleton-title" style={{ width: '200px', height: '2rem', marginBottom: '2rem' }}></div>
+          <div className="projects-grid">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="project-card skeleton" style={{ height: '400px' }}></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="projects-section">

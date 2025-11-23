@@ -3,11 +3,50 @@ import './about.css';
 import { useContent } from '../context/ContentContext.jsx';
 
 const About = () => {
-  const { content } = useContent();
+  const { content, loading } = useContent();
 
   const about = content?.about || {};
   const skills = content?.skills || [];
   const educationData = content?.education || [];
+
+  if (loading) {
+    return (
+      <section id="about" className="about-section">
+        <div className="about-container">
+          <div className="about-content">
+            <div className="about-text">
+              <div className="skeleton skeleton-title" style={{ width: '150px', height: '2rem', marginBottom: '1.5rem' }}></div>
+              <div className="skeleton skeleton-paragraph" style={{ marginBottom: '0.5rem' }}></div>
+              <div className="skeleton skeleton-paragraph" style={{ marginBottom: '0.5rem' }}></div>
+              <div className="skeleton skeleton-paragraph" style={{ width: '90%', marginBottom: '1rem' }}></div>
+              <div className="skeleton skeleton-paragraph" style={{ marginBottom: '0.5rem' }}></div>
+              <div className="skeleton skeleton-paragraph" style={{ width: '85%' }}></div>
+            </div>
+            <div className="about-skills">
+              <div className="skeleton skeleton-subtitle" style={{ width: '130px', height: '1.5rem', marginBottom: '1rem' }}></div>
+              <div className="skills-grid">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="skeleton" style={{ width: '120px', height: '32px', borderRadius: '16px' }}></div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="education-section">
+            <div className="skeleton skeleton-title" style={{ width: '250px', height: '2rem', marginBottom: '0.5rem' }}></div>
+            <div className="skeleton skeleton-text" style={{ width: '400px', height: '1rem', marginBottom: '2rem' }}></div>
+            <div className="education-timeline">
+              {[1, 2].map((i) => (
+                <div key={i} className="education-timeline-item">
+                  <div className="education-timeline-marker"></div>
+                  <div className="education-card skeleton" style={{ height: '200px' }}></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="about" className="about-section">
@@ -16,10 +55,10 @@ const About = () => {
           <div className="about-text">
             <h2 className="about-title">About Me</h2>
             <p>
-              {about.paragraph_1 || "I'm a passionate and results-driven developer with a knack for creating dynamic and user-friendly web applications. With a strong foundation in modern frontend technologies, I specialize in turning complex problems into elegant, interactive solutions."}
+              {about.paragraph_1}
             </p>
             <p>
-              {about.paragraph_2 || "My journey in tech began with a deep curiosity for how things work, and it has since evolved into a career where I get to build, innovate, and collaborate with amazing people. I'm always eager to learn new skills and take on challenging projects."}
+              {about.paragraph_2}
             </p>
           </div>
           <div className="about-skills">
