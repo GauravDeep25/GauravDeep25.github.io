@@ -552,6 +552,30 @@
   background: var(--bg-primary);
 }
 
+.move-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-base);
+  min-width: 36px;
+}
+
+.move-btn:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+}
+
+.move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 /* Modal */
 .edit-modal {
   position: fixed;

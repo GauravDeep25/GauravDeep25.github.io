@@ -50,6 +50,7 @@ const EditDashboard = () => {
   const [editingPhoto, setEditingPhoto] = useState(null);
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [editingExistingPhoto, setEditingExistingPhoto] = useState(null);
 
   useEffect(() => {
     checkAuth();
@@ -669,6 +670,29 @@ const EditDashboard = () => {
     setPhotos(newPhotos);
   };
 
+  const updateExistingPhoto = async () => {
+    if (!editingExistingPhoto || !editingExistingPhoto.id) return;
+    
+    setLoading(true);
+    try {
+      const { error } = await updatePhoto(editingExistingPhoto.id, {
+        title: editingExistingPhoto.title || '',
+        description: editingExistingPhoto.description || ''
+      });
+      if (error) throw error;
+      
+      const { data: photosData } = await fetchPhotos();
+      if (photosData) setPhotos(photosData);
+      setEditingExistingPhoto(null);
+      showSaveStatus('success');
+    } catch (error) {
+      console.error('Error updating photo:', error);
+      showSaveStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const savePhotosOrder = async () => {
     setLoading(true);
     try {
@@ -1230,6 +1254,9 @@ const EditDashboard = () => {
                           </button>
                         </>
                       )}
+                      <button onClick={() => setEditingExistingPhoto(photo)} className="edit-btn">
+                        Edit
+                      </button>
                       <button onClick={() => deletePhotoHandler(photo.id)} className="delete-btn">
                         Delete
                       </button>
@@ -1242,6 +1269,48 @@ const EditDashboard = () => {
                 <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
                   No photos uploaded yet.
                 </p>
+              )}
+
+              {/* Edit Photo Modal */}
+              {editingExistingPhoto && (
+                <div className="edit-modal">
+                  <div className="modal-content">
+                    <h3>Edit Photo</h3>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <img 
+                        src={editingExistingPhoto.image_url} 
+                        alt="" 
+                        style={{ width: '100%', maxWidth: '400px', borderRadius: '4px' }} 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Title</label>
+                      <input
+                        type="text"
+                        value={editingExistingPhoto.title || ''}
+                        onChange={(e) => setEditingExistingPhoto({ ...editingExistingPhoto, title: e.target.value })}
+                        placeholder="Photo title"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Description</label>
+                      <textarea
+                        value={editingExistingPhoto.description || ''}
+                        onChange={(e) => setEditingExistingPhoto({ ...editingExistingPhoto, description: e.target.value })}
+                        rows="3"
+                        placeholder="Photo description"
+                      />
+                    </div>
+                    <div className="modal-buttons">
+                      <button onClick={updateExistingPhoto} disabled={loading} className="save-button">
+                        {loading ? 'Saving...' : 'Save'}
+                      </button>
+                      <button onClick={() => setEditingExistingPhoto(null)} className="cancel-btn">
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
           )}
