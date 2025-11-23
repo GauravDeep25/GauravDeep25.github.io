@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './about.css';
 import { useContent } from '../context/ContentContext.jsx';
 
 const About = () => {
-  const [expandedItems, setExpandedItems] = useState([]);
   const { content } = useContent();
 
   const about = content?.about || {};
   const skills = content?.skills || [];
   const educationData = content?.education || [];
-
-  const toggleExpand = (index) => {
-    setExpandedItems(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
-  };
 
   return (
     <section id="about" className="about-section">
@@ -45,81 +36,50 @@ const About = () => {
         <div className="education-section">
           <h3 className="education-main-title">Educational Journey</h3>
           <p className="timeline-subtitle">My academic path and educational achievements that shaped my technical foundation</p>
-          <div className="timeline">
-            <div className="timeline-line"></div>
+          <div className="education-timeline">
+            <div className="education-timeline-line"></div>
             {educationData.map((edu, index) => {
-              const isExpanded = expandedItems.includes(index);
               return (
-                <div className="timeline-item education" key={index} style={{ animationDelay: `${index * 0.2}s` }}>
-                  <div className="timeline-marker">
-                    <div className="timeline-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                      </svg>
-                    </div>
-                    <span className="timeline-year">{edu.years || `${edu.start_date} - ${edu.end_date || 'Present'}`}</span>
-                  </div>
-                  <div className={`timeline-content ${isExpanded ? 'expanded' : ''}`}>
-                    <div className="timeline-header">
-                      <div className="timeline-header-top">
-                        <div className="timeline-title-group">
-                          <h4 className="timeline-degree">{edu.degree}</h4>
-                          <p className="timeline-university">{edu.institution || edu.university}</p>
-                        </div>
+                <div className="education-timeline-item" key={index} style={{ animationDelay: `${index * 0.2}s` }}>
+                  <div className="education-timeline-marker"></div>
+                  <div className="education-card">
+                    <div className="education-header">
+                      <div className="education-header-main">
+                        <h4 className="education-degree">{edu.degree}</h4>
+                        <p className="education-institution">{edu.institution || edu.university}</p>
+                      </div>
+                      <div className="education-meta">
+                        <span className="education-year">{edu.years || `${edu.start_date} - ${edu.end_date || 'Present'}`}</span>
                         {(edu.status || edu.end_date) && (
-                          <div className="timeline-status">
-                            <span className={`status-badge ${(edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'current' : 'completed')).toLowerCase()}`}>
-                              {edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'Current' : 'Completed')}
-                            </span>
-                          </div>
+                          <span className={`status-badge ${(edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'current' : 'completed')).toLowerCase()}`}>
+                            {edu.status || (edu.end_date === 'Present' || parseInt(edu.end_date) >= new Date().getFullYear() ? 'Current' : 'Completed')}
+                          </span>
                         )}
                       </div>
-                      {edu.grade && (
-                        <div className="timeline-grade">
-                          <span className="grade-label">Grade: </span>
-                          <span className="grade-value">{edu.grade}</span>
-                        </div>
-                      )}
                     </div>
-                    
-                    <div className={`timeline-expandable ${isExpanded ? 'expanded' : ''}`}>
-                      <p className="timeline-description">{edu.description}</p>
+
+                    {edu.grade && (
+                      <div className="education-grade">
+                        <span className="grade-label">Grade: </span>
+                        <span className="grade-value">{edu.grade}</span>
+                      </div>
+                    )}
+
+                    <div className="education-details">
+                      <p className="education-description">{edu.description}</p>
                       {edu.technologies && edu.technologies.length > 0 && (
-                        <div className="timeline-technologies">
+                        <div className="education-technologies">
                           {edu.technologies.map((tech, techIndex) => (
                             <span key={techIndex} className="tech-tag">{tech}</span>
                           ))}
                         </div>
                       )}
                       {edu.field_of_study && !edu.technologies && (
-                        <div className="timeline-field">
+                        <div className="education-field">
                           <span className="field-tag">{edu.field_of_study}</span>
                         </div>
                       )}
                     </div>
-                    
-                    <button 
-                      className="timeline-toggle-btn" 
-                      onClick={() => toggleExpand(index)}
-                      aria-label={isExpanded ? "Show less" : "Show more"}
-                    >
-                      <span>{isExpanded ? "Show Less" : "Read More"}</span>
-                      <svg 
-                        className={`toggle-icon ${isExpanded ? 'rotated' : ''}`}
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                    </button>
                   </div>
                 </div>
               );
@@ -132,4 +92,3 @@ const About = () => {
 };
 
 export default About;
-

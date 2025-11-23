@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase, signOut } from '../supabaseClient';
+import { supabase, signOut, fetchPhotos, createPhoto, updatePhoto, deletePhoto, uploadPhotoFile } from '../supabaseClient';
 import { useContent } from '../context/ContentContext';
 import { uploadImage } from '../utils/imageUpload';
 import './edit.css';
@@ -45,6 +45,12 @@ const EditDashboard = () => {
   // Social links state
   const [socialLinks, setSocialLinks] = useState([]);
 
+  // Photos state
+  const [photos, setPhotos] = useState([]);
+  const [editingPhoto, setEditingPhoto] = useState(null);
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+
   useEffect(() => {
     checkAuth();
     loadData();
@@ -67,6 +73,12 @@ const EditDashboard = () => {
       setProjects(content.projects || []);
       setCertifications(content.certifications || []);
       setSocialLinks(content.socialLinks || []);
+    }
+
+    // Load photos separately
+    const { data: photosData } = await fetchPhotos();
+    if (photosData) {
+      setPhotos(photosData);
     }
   };
 
@@ -536,6 +548,148 @@ const EditDashboard = () => {
     }
   };
 
+  // Photography handlers
+  const handlePhotoFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPhotoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setPhotoPreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadPhoto = async () => {
+    if (!photoFile) {
+      alert('Please select a photo');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { url, error: uploadError } = await uploadPhotoFile(photoFile);
+      if (uploadError) {
+        alert('Error uploading photo: ' + uploadError.message);
+        return;
+      }
+      const photoData = {
+        image_url: url,
+        title: editingPhoto?.title || '',
+        description: editingPhoto?.description || '',
+        display_order: photos.length
+      };
+      const { error } = await createPhoto(photoData);
+      if (error) throw error;
+      const { data: photosData } = await fetchPhotos();
+      if (photosData) setPhotos(photosData);
+      setEditingPhoto(null);
+      setPhotoFile(null);
+      setPhotoPreview(null);
+      showSaveStatus('success');
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      showSaveStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deletePhotoHandler = async (id) => {
+    if (!confirm('Are you sure you want to delete this photo?')) return;
+
+    setLoading(true);
+    try {
+      // First fetch the photo to get the image URL for storage deletion
+      const { data: photoToDelete, error: fetchError } = await supabase
+        .from('photos')
+        .select('image_url')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) {
+        console.error('Error fetching photo details for deletion:', fetchError);
+      }
+
+      // Delete from database first
+      const { error } = await deletePhoto(id);
+      if (error) throw error;
+
+      // If we have the URL, try to delete from storage too
+      if (photoToDelete && photoToDelete.image_url) {
+        try {
+          // Extract path from URL
+          // URL format: .../storage/v1/object/public/bucket_name/folder/filename
+          // We need: folder/filename
+          const imageUrl = photoToDelete.image_url;
+          const urlObj = new URL(imageUrl);
+          const pathParts = urlObj.pathname.split('/');
+          // Find 'photography' bucket in path and get everything after it
+          const bucketIndex = pathParts.indexOf('photography');
+
+          let storagePath = '';
+          if (bucketIndex !== -1 && bucketIndex < pathParts.length - 1) {
+            storagePath = pathParts.slice(bucketIndex + 1).join('/');
+          } else {
+            // Fallback for simple filename extraction if path parsing fails
+            const fileName = imageUrl.split('/').pop();
+            storagePath = `photography/${fileName}`;
+          }
+
+          const { data: removeData, error: storageError } = await supabase.storage
+            .from('photography')
+            .remove([storagePath]);
+
+          if (storageError) {
+            console.error('Error deleting file from storage:', storageError);
+            alert('Photo removed from list, but file deletion failed: ' + storageError.message);
+          } else {
+            if (removeData && removeData.length === 0) {
+              console.warn('Storage delete returned 0 items. Check if path is correct or file exists.');
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing URL or deleting from storage:', e);
+        }
+      }
+
+      const { data: photosData } = await fetchPhotos();
+      if (photosData) {
+        setPhotos(photosData);
+      }
+      showSaveStatus('success');
+    } catch (error) {
+      console.error('Error deleting photo:', error);
+      showSaveStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const movePhoto = (index, direction) => {
+    const newPhotos = moveItem(photos, index, direction);
+    setPhotos(newPhotos);
+  };
+
+  const savePhotosOrder = async () => {
+    setLoading(true);
+    try {
+      for (let i = 0; i < photos.length; i++) {
+        const photo = photos[i];
+        if (photo.id) {
+          const { error } = await updatePhoto(photo.id, { display_order: i });
+          if (error) throw error;
+        }
+      }
+      const { data: photosData } = await fetchPhotos();
+      if (photosData) setPhotos(photosData);
+      showSaveStatus('success');
+    } catch (error) {
+      console.error('Error saving photos order:', error);
+      showSaveStatus('error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="edit-dashboard">
       <div className="dashboard-header">
@@ -598,6 +752,12 @@ const EditDashboard = () => {
             onClick={() => setActiveTab('social')}
           >
             Social Links
+          </button>
+          <button
+            className={`tab ${activeTab === 'photography' ? 'active' : ''}`}
+            onClick={() => setActiveTab('photography')}
+          >
+            Photography
           </button>
           <button
             className={`tab ${activeTab === 'certifications' ? 'active' : ''}`}
@@ -997,6 +1157,92 @@ const EditDashboard = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Photography Tab */}
+          {activeTab === 'photography' && (
+            <div className="edit-section">
+              <h2>Photography</h2>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Upload and manage photos for your photography page.</p>
+
+              <div style={{ marginBottom: '3rem' }}>
+                <h3>Upload New Photo</h3>
+                <div className="form-group">
+                  <label>Photo File</label>
+                  <input type="file" accept="image/*" onChange={handlePhotoFileChange} />
+                  {photoPreview && (
+                    <div style={{ marginTop: '1rem', maxWidth: '300px' }}>
+                      <img src={photoPreview} alt="Preview" style={{ width: '100%', borderRadius: '4px' }} />
+                    </div>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label>Title (Optional)</label>
+                  <input
+                    type="text"
+                    value={editingPhoto?.title || ''}
+                    onChange={(e) => setEditingPhoto({ ...editingPhoto, title: e.target.value })}
+                    placeholder="Photo title"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Description (Optional)</label>
+                  <textarea
+                    value={editingPhoto?.description || ''}
+                    onChange={(e) => setEditingPhoto({ ...editingPhoto, description: e.target.value })}
+                    rows="3"
+                    placeholder="Photo description"
+                  />
+                </div>
+                <button onClick={uploadPhoto} disabled={loading || !photoFile} className="save-button">
+                  {loading ? 'Uploading...' : 'Upload Photo'}
+                </button>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <h3>Manage Photos ({photos.length})</h3>
+              {photos.length > 1 && (
+                <button onClick={savePhotosOrder} disabled={loading} className="save-button" style={{ marginBottom: '1rem' }}>
+                  Save Display Order
+                </button>
+              )}
+
+              <div className="items-list">
+                {photos.map((photo, index) => (
+                  <div key={photo.id} className="list-item">
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flex: 1 }}>
+                      <img src={photo.image_url} alt="" style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '4px' }} />
+                      <div className="item-content">
+                        {photo.title && <h4>{photo.title}</h4>}
+                        {photo.description && <p>{photo.description}</p>}
+                      </div>
+                    </div>
+                    <div className="item-actions">
+                      {photos.length > 1 && (
+                        <>
+                          <button onClick={() => movePhoto(index, 'up')} disabled={index === 0} className="move-btn">
+                            ↑
+                          </button>
+                          <button onClick={() => movePhoto(index, 'down')} disabled={index === photos.length - 1} className="move-btn">
+                            ↓
+                          </button>
+                        </>
+                      )}
+                      <button onClick={() => deletePhotoHandler(photo.id)} className="delete-btn">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {photos.length === 0 && (
+                <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                  No photos uploaded yet.
+                </p>
+              )}
             </div>
           )}
 

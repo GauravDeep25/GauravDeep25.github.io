@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './certifications.css';
 import { useContent } from '../context/ContentContext.jsx';
 
 const Certifications = () => {
   const { content } = useContent();
   const certificationsData = content?.certifications || [];
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openLightbox = (imageUrl) => {
+    if (imageUrl) {
+      setSelectedImage(imageUrl);
+    }
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <section id="certifications" className="certifications-section">
@@ -13,38 +24,25 @@ const Certifications = () => {
         <p className="certifications-subtitle">
           Professional certifications and courses that enhance my skills and expertise
         </p>
-        
+
         <div className="certifications-grid">
           {certificationsData.map((cert, index) => (
-            <div key={cert.id || index} className="certification-card">
+            <div
+              key={cert.id || index}
+              className="certification-card"
+              onClick={() => openLightbox(cert.image_url)}
+            >
               {cert.image_url && (
                 <div className="certification-image-container">
-                  <img 
-                    src={cert.image_url} 
-                    alt={cert.title} 
+                  <img
+                    src={cert.image_url}
+                    alt={cert.title}
                     className="certification-image"
                     loading="lazy"
                   />
-                  <div className="certification-overlay">
-                    {cert.credential_url && (
-                      <a 
-                        href={cert.credential_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="view-credential-btn"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                          <polyline points="15 3 21 3 21 9"></polyline>
-                          <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        View Credential
-                      </a>
-                    )}
-                  </div>
                 </div>
               )}
-              
+
               <div className="certification-content">
                 <div className="certification-header">
                   <h3 className="certification-title">{cert.title}</h3>
@@ -83,6 +81,18 @@ const Certifications = () => {
                     ))}
                   </div>
                 )}
+
+                {cert.credential_url && (
+                  <a
+                    href={cert.credential_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="view-credential-btn"
+                    onClick={(e) => e.stopPropagation()} // Prevent lightbox opening
+                  >
+                    View Credential &rarr;
+                  </a>
+                )}
               </div>
             </div>
           ))}
@@ -90,14 +100,20 @@ const Certifications = () => {
 
         {certificationsData.length === 0 && (
           <div className="no-certifications">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="8" r="7"></circle>
-              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-            </svg>
-            <p>No certifications added yet. Login to add your achievements!</p>
+            <p>No certifications added yet.</p>
           </div>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={closeLightbox}>&times;</button>
+            <img src={selectedImage} alt="Certification Full View" className="lightbox-image" />
+          </div>
+        </div>
+      )}
     </section>
   );
 };

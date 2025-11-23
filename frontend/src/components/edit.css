@@ -105,7 +105,7 @@
 
 .login-button {
   background: var(--primary-color);
-  color: #1a1a1a;
+  color: var(--bg-primary);
   border: none;
   padding: 14px;
   border-radius: var(--radius-md);
@@ -217,7 +217,7 @@
 
 .preview-button {
   background: var(--primary-color);
-  color: #1a1a1a;
+  color: var(--bg-primary);
   border: none;
 }
 
@@ -306,8 +306,8 @@
 }
 
 .tab.active {
-  background: var(--primary-color);
-  color: #1a1a1a;
+  background: var(--text-primary);
+  color: var(--bg-primary);
   font-weight: 600;
 }
 
@@ -366,7 +366,7 @@
 .save-button,
 .add-button {
   background: var(--primary-color);
-  color: #1a1a1a;
+  color: var(--bg-primary);
   border: none;
   padding: 12px 24px;
   border-radius: var(--radius-md);
@@ -524,7 +524,7 @@
 
 .edit-btn {
   background: var(--primary-color);
-  color: #1a1a1a;
+  color: var(--bg-primary);
 }
 
 .edit-btn:hover {
