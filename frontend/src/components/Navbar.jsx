@@ -7,7 +7,8 @@ const Navbar = ({ isMenuOpen, toggleMenu }) => {
         { href: '/#projects', label: 'Work', type: 'anchor' },
         { href: '/#certifications', label: 'Certifications', type: 'anchor' },
         { href: '/photography', label: 'Photography', type: 'link' },
-        { href: '/#contact', label: 'Contact', type: 'anchor' }
+        { href: '/#contact', label: 'Contact', type: 'anchor' },
+        { href: '/edit', label: 'Edit', type: 'link' }
     ];
 
     // Helper to handle navigation
