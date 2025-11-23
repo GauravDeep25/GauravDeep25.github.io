@@ -81,6 +81,8 @@ const Photography = () => {
                                         alt={photo.title || 'Photography'}
                                         className="photo-image"
                                         loading="lazy"
+                                        onContextMenu={(e) => e.preventDefault()}
+                                        draggable="false"
                                     />
                                     <div className="photo-overlay">
                                         <span className="view-icon">
@@ -112,6 +114,8 @@ const Photography = () => {
                             src={selectedPhoto.image_url}
                             alt={selectedPhoto.title || 'Photography'}
                             className="lightbox-image"
+                            onContextMenu={(e) => e.preventDefault()}
+                            draggable="false"
                         />
                         {(selectedPhoto.title || selectedPhoto.description) && (
                             <div className="lightbox-caption">
