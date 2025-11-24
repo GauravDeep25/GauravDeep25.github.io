@@ -17,17 +17,17 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          # Log heartbeat ping to database
-          echo "Logging heartbeat to Supabase at: $SUPABASE_URL"
+          # Update heartbeat record to keep database active
+          echo "Updating heartbeat in Supabase at: $SUPABASE_URL"
           
           response=$(curl -s -w "\n%{http_code}" \
-            "$SUPABASE_URL/rest/v1/heartbeat" \
-            -X POST \
+            "$SUPABASE_URL/rest/v1/heartbeat?id=eq.1" \
+            -X PATCH \
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
             -H "Content-Type: application/json" \
             -H "Prefer: return=representation" \
-            -d '{"ping_count": 0}')
+            -d '{"last_ping": "now()"}')
           
           http_code=$(echo "$response" | tail -n1)
           body=$(echo "$response" | sed '$d')
@@ -35,11 +35,11 @@ jobs:
           echo "HTTP Status Code: $http_code"
           echo "Response Body: $body"
           
-          if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
-            echo "✅ Heartbeat logged successfully to database"
+          if [ "$http_code" = "200" ] || [ "$http_code" = "204" ]; then
+            echo "✅ Heartbeat updated successfully in database"
             exit 0
           else
-            echo "❌ Failed to log heartbeat. Status: $http_code"
+            echo "❌ Failed to update heartbeat. Status: $http_code"
             exit 1
           fi
       
