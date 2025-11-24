@@ -17,13 +17,17 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          # Simple health check to keep the database active
-          echo "Checking Supabase at: $SUPABASE_URL"
+          # Log heartbeat ping to database
+          echo "Logging heartbeat to Supabase at: $SUPABASE_URL"
           
           response=$(curl -s -w "\n%{http_code}" \
-            "$SUPABASE_URL/rest/v1/hero_content?select=id&limit=1" \
+            "$SUPABASE_URL/rest/v1/heartbeat" \
+            -X POST \
             -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d '{"ping_count": 0}')
           
           http_code=$(echo "$response" | tail -n1)
           body=$(echo "$response" | sed '$d')
@@ -31,11 +35,11 @@ jobs:
           echo "HTTP Status Code: $http_code"
           echo "Response Body: $body"
           
-          if [ "$http_code" = "200" ] || [ "$http_code" = "206" ]; then
-            echo "✅ Supabase is active and responsive"
+          if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
+            echo "✅ Heartbeat logged successfully to database"
             exit 0
           else
-            echo "❌ Supabase returned unexpected status: $http_code"
+            echo "❌ Failed to log heartbeat. Status: $http_code"
             exit 1
           fi
       
