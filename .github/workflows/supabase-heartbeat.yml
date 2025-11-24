@@ -12,18 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Ping Supabase Heartbeat
+      - name: Keep Supabase Active
         run: |
-          curl -X POST \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/ping_heartbeat" \
-            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_KEY }}" \
-            -H "Content-Type: application/json" \
-            -H "Prefer: return=representation"
+          # Simple health check to keep the database active
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/hero_content?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+          
+          echo "Response code: $response"
+          
+          if [ "$response" = "200" ] || [ "$response" = "206" ]; then
+            echo "✅ Supabase is active and responsive"
+            exit 0
+          else
+            echo "❌ Supabase returned unexpected status: $response"
+            exit 1
+          fi
       
       - name: Log Success
         if: success()
-        run: echo "✅ Heartbeat sent successfully at $(date)"
+        run: echo "✅ Heartbeat completed successfully at $(date)"
       
       - name: Log Failure
         if: failure()
