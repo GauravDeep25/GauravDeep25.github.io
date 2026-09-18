@@ -1,0 +1,27 @@
+name: Supabase Keep-Alive Cron
+
+on:
+  schedule:
+    # Runs every day at 00:00 UTC
+    - cron: '0 0 * * *'
+  # Allow manual triggering from the GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  ping-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase API
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ]; then
+            echo "Supabase secrets are not set! Skipping ping."
+            exit 1
+          fi
+          echo "Pinging Supabase REST API to prevent pausing..."
+          curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/rest/v1/profile?select=id" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY"
+          echo " - Ping complete!"
