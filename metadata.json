@@ -1,0 +1,6 @@
+{
+  "name": "Editorial Minimalist Portfolio",
+  "description": "An editorial minimalist personal portfolio and live editable admin panel backed by Supabase with work index, photography gallery, masonry log, bio, and contact form.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
