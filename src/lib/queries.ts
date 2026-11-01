@@ -226,9 +226,51 @@ export async function deleteAchievement(id: string): Promise<void> {
 // PHOTOGRAPHY QUERIES
 // ==========================================
 
+function sanitizePhotos(photos: Photo[]): Photo[] {
+  return (photos || []).filter(
+    (p) => !p.id.startsWith('ph-') && !p.image_url?.includes('images.unsplash.com')
+  );
+}
+
+// Fallback in case of bulk statement timeout or transient gateway errors
+async function fetchPhotosIndividually(): Promise<Photo[]> {
+  try {
+    const { data: meta, error: metaErr } = await supabase
+      .from('photos')
+      .select('id, title, caption, location, camera_info, category, year, sort_order, is_featured, created_at')
+      .order('sort_order', { ascending: true })
+      .order('year', { ascending: false });
+
+    if (metaErr || !meta || meta.length === 0) return [];
+
+    const fullPhotos: Photo[] = [];
+    for (const item of meta) {
+      try {
+        const { data: single, error: sErr } = await supabase
+          .from('photos')
+          .select('*')
+          .eq('id', item.id)
+          .single();
+
+        if (!sErr && single) {
+          fullPhotos.push(single as Photo);
+        } else {
+          fullPhotos.push(item as Photo);
+        }
+      } catch {
+        fullPhotos.push(item as Photo);
+      }
+    }
+    return sanitizePhotos(fullPhotos);
+  } catch (e) {
+    console.warn('fetchPhotosIndividually fallback error:', e);
+    return [];
+  }
+}
+
 export async function getPhotos(): Promise<Photo[]> {
   if (!isSupabaseConfigured) {
-    return getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+    return sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
   }
 
   try {
@@ -239,24 +281,36 @@ export async function getPhotos(): Promise<Photo[]> {
       .order('year', { ascending: false });
 
     if (error) {
-      console.warn('Error fetching photos from Supabase:', error);
-      return getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+      console.warn('Error fetching photos in bulk, attempting individual fallback:', error);
+      const fallbackData = await fetchPhotosIndividually();
+      if (fallbackData.length > 0) {
+        setLocalData(LOCAL_STORAGE_KEYS.photos, fallbackData);
+        return fallbackData;
+      }
+      return sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
     }
 
     if (!data || data.length === 0) {
-      return getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+      return [];
     }
 
-    return data as Photo[];
+    const cleaned = sanitizePhotos(data as Photo[]);
+    setLocalData(LOCAL_STORAGE_KEYS.photos, cleaned);
+    return cleaned;
   } catch (err) {
-    console.error('getPhotos exception:', err);
-    return getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+    console.error('getPhotos exception, attempting individual fallback:', err);
+    const fallbackData = await fetchPhotosIndividually();
+    if (fallbackData.length > 0) {
+      setLocalData(LOCAL_STORAGE_KEYS.photos, fallbackData);
+      return fallbackData;
+    }
+    return sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
   }
 }
 
 export async function createPhoto(photoData: Omit<Photo, 'id' | 'created_at'>): Promise<Photo> {
   if (!isSupabaseConfigured) {
-    const list = getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+    const list = sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
     const newPhoto: Photo = {
       ...photoData,
       id: 'local-ph-' + Date.now(),
@@ -279,7 +333,7 @@ export async function createPhoto(photoData: Omit<Photo, 'id' | 'created_at'>): 
 
 export async function updatePhoto(id: string, photoData: Partial<Photo>): Promise<Photo> {
   if (!isSupabaseConfigured) {
-    const list = getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+    const list = sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
     const updated = list.map((p) => (p.id === id ? { ...p, ...photoData } : p));
     setLocalData(LOCAL_STORAGE_KEYS.photos, updated);
     const found = updated.find((p) => p.id === id);
@@ -300,7 +354,7 @@ export async function updatePhoto(id: string, photoData: Partial<Photo>): Promis
 
 export async function deletePhoto(id: string): Promise<void> {
   if (!isSupabaseConfigured) {
-    const list = getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, initialPhotos);
+    const list = sanitizePhotos(getLocalData<Photo[]>(LOCAL_STORAGE_KEYS.photos, []));
     const updated = list.filter((p) => p.id !== id);
     setLocalData(LOCAL_STORAGE_KEYS.photos, updated);
     return;
